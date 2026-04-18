@@ -21,4 +21,4 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
-CMD ["sh", "-c", "echo 'Starting alembic...' && alembic upgrade head && echo 'Starting uvicorn...' && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "echo 'Starting alembic...' && alembic upgrade head && echo 'Starting uvicorn...' && echo \"CORS_ORIGINS=$CORS_ORIGINS\" && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

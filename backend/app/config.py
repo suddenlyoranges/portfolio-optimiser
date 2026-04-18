@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     @property
     def cors_origin_list(self) -> list[str]:
-        return [o.strip() for o in self.cors_origins.split(",")]
+        return [o.strip() for o in self.cors_origins.strip().split(",") if o.strip()]
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
