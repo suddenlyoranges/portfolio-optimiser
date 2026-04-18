@@ -1,0 +1,95 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* --- Palette --- */
+  --color-primary: #2c3e6b;
+  --color-primary-hover: #1f2d4f;
+  --color-primary-light: #e8ecf4;
+  --color-accent: #5a7a64;
+  --color-accent-light: #e7efe9;
+  --color-danger: #b44545;
+  --color-danger-hover: #943636;
+  --color-danger-light: #fbeaea;
+  --color-success: #4a7a5a;
+  --color-warning: #b8862e;
+
+  /* --- Surfaces --- */
+  --color-bg: #f5f5f3;
+  --color-surface: #ffffff;
+  --color-sidebar: #1c1f26;
+  --color-sidebar-hover: #2a2e38;
+  --color-text: #2a2a2e;
+  --color-text-secondary: #71717a;
+  --color-text-muted: #a1a1aa;
+  --color-border: #e4e4e7;
+  --color-border-strong: #d4d4d8;
+  --color-input-bg: #fafaf9;
+  --color-hover: #f4f4f5;
+
+  /* --- Shape & Motion --- */
+  --radius: 6px;
+  --radius-lg: 10px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md:
+    0 4px 8px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-lg:
+    0 10px 20px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+  --transition: 150ms ease;
+
+  /* --- Typography --- */
+  --font-display:
+    "DM Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
