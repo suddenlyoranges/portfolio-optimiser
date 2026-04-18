@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -9,6 +10,16 @@ class Settings(BaseSettings):
     refresh_token_expire_days: int = 7
     guest_token_expire_hours: int = 24
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def fix_database_url(cls, v: str) -> str:
+        # Railway provides postgresql:// but asyncpg needs postgresql+asyncpg://
+        if v.startswith("postgresql://"):
+            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        if v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql+asyncpg://", 1)
+        return v
 
     @property
     def cors_origin_list(self) -> list[str]:
