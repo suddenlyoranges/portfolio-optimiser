@@ -15,9 +15,10 @@ COPY --from=builder /install /usr/local
 COPY . .
 
 ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
 
 RUN chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
-CMD ["sh", "-c", "alembic upgrade head && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "echo 'Starting alembic...' && alembic upgrade head && echo 'Starting uvicorn...' && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
