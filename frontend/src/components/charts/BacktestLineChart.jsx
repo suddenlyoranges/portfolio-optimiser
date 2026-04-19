@@ -46,7 +46,7 @@ export default function BacktestLineChart({ data }) {
           type="monotone"
           dataKey="value"
           name="Portfolio Value"
-          stroke="#2c3e6b"
+          stroke="#6366f1"
           dot={false}
           strokeWidth={2}
         />

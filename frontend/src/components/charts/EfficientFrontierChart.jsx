@@ -63,8 +63,8 @@ export default function EfficientFrontierChart({ frontier, optimal }) {
         <Scatter
           name="Efficient Frontier"
           data={frontierData}
-          fill="#2c3e6b"
-          opacity={0.6}
+          fill="#6366f1"
+          opacity={0.7}
           r={3}
         />
         {specialPoints.length > 0 && (

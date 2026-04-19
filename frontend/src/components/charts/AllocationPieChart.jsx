@@ -8,16 +8,16 @@ import {
 } from "recharts";
 
 const COLORS = [
-  "#2c3e6b",
-  "#5a7a64",
-  "#7c6f5b",
-  "#4a6fa5",
-  "#8b6e7f",
-  "#5d8a6e",
-  "#6b7fa3",
-  "#a07e5f",
-  "#6e8893",
-  "#7a6b8a",
+  "#6366f1",
+  "#f59e0b",
+  "#10b981",
+  "#ef4444",
+  "#3b82f6",
+  "#ec4899",
+  "#14b8a6",
+  "#f97316",
+  "#8b5cf6",
+  "#22c55e",
 ];
 
 export default function AllocationPieChart({ weights }) {

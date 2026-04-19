@@ -9,7 +9,7 @@ import {
   Legend,
 } from "recharts";
 
-const COLORS = ["#2c3e6b", "#b44545", "#5a7a64", "#b8862e", "#7a6b8a"];
+const COLORS = ["#6366f1", "#ef4444", "#10b981", "#f59e0b", "#ec4899"];
 
 export default function RiskReturnScatter({ portfolios }) {
   return (
