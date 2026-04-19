@@ -22,7 +22,7 @@ class BacktestResult(Base):
     start_date: Mapped[date] = mapped_column(Date, nullable=False)
     end_date: Mapped[date] = mapped_column(Date, nullable=False)
     rebalancing_frequency: Mapped[str] = mapped_column(String(20), nullable=False, default="monthly")
-    portfolio_values: Mapped[dict] = mapped_column(JSONB, nullable=False)
+    portfolio_values: Mapped[list] = mapped_column(JSONB, nullable=False)
     metrics: Mapped[dict] = mapped_column(JSONB, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

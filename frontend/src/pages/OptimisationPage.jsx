@@ -19,6 +19,7 @@ export default function OptimisationPage() {
   const [method, setMethod] = useState("max_sharpe");
   const [useHistorical, setUseHistorical] = useState(true);
   const [lookbackDays, setLookbackDays] = useState("252");
+  const [riskFreeRate, setRiskFreeRate] = useState("2");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -43,6 +44,7 @@ export default function OptimisationPage() {
         method,
         use_historical: useHistorical,
         lookback_days: parseInt(lookbackDays),
+        risk_free_rate: parseFloat(riskFreeRate) / 100,
       });
       setResult(res.data);
       const histRes = await listOptimisations(id);
@@ -128,6 +130,20 @@ export default function OptimisationPage() {
             />
           </div>
         )}
+        <div className={styles.field}>
+          <label>
+            Risk-Free Rate (%)
+            <InfoTip text="The annual return on a 'riskless' investment like government bonds. Used to calculate the Sharpe ratio — how much extra return the portfolio earns above this baseline per unit of risk. A typical value is 2–5%." />
+          </label>
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            max="50"
+            value={riskFreeRate}
+            onChange={(e) => setRiskFreeRate(e.target.value)}
+          />
+        </div>
         <button
           className={styles.runBtn}
           onClick={handleOptimise}

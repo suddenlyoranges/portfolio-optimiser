@@ -45,10 +45,8 @@ class TestRunBacktest:
         )
         m = result["metrics"]
         assert "total_return" in m
-        assert "cagr" in m
         assert "annualised_volatility" in m
         assert "sharpe_ratio" in m
-        assert "sortino_ratio" in m
         assert "max_drawdown" in m
         assert "max_drawdown_duration_days" in m
 

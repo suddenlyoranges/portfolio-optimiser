@@ -18,6 +18,7 @@ class OptimisationRequest(BaseModel):
     method: OptimisationMethod = OptimisationMethod.MAX_SHARPE
     use_historical: bool = True
     lookback_days: int = Field(252, ge=30, le=2520)
+    risk_free_rate: float = Field(0.02, ge=0.0, le=0.5)
 
 
 class PortfolioStats(BaseModel):

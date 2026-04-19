@@ -1,7 +1,15 @@
+"""
+Backtest engine using quantstats for performance metrics.
+
+Simulates a portfolio forward through time with periodic rebalancing,
+then delegates metric computation to quantstats.
+"""
+
 from datetime import date
 
 import numpy as np
 import pandas as pd
+import quantstats as qs
 
 
 def run_backtest(
@@ -25,6 +33,7 @@ def run_backtest(
     returns = prices.pct_change().dropna()
     w = np.array([weights[t] for t in tickers])
 
+    # ── forward simulation with rebalancing ──────────────────────────────
     portfolio_values = []
     current_value = initial_value
     current_weights = w.copy()
@@ -50,6 +59,7 @@ def run_backtest(
             current_weights = w.copy()
             last_rebalance = dt
 
+    # ── compute metrics via quantstats ───────────────────────────────────
     metrics = _compute_metrics(portfolio_values, initial_value)
     return {
         "portfolio_values": portfolio_values,
@@ -70,27 +80,26 @@ def _should_rebalance(last: pd.Timestamp, current: pd.Timestamp, frequency: str)
 
 
 def _compute_metrics(portfolio_values: list[dict], initial_value: float) -> dict:
+    """Compute backtest metrics using quantstats."""
     values = np.array([pv["value"] for pv in portfolio_values])
     dates = pd.to_datetime([pv["date"] for pv in portfolio_values])
+
+    # Build a pandas Series of daily returns for quantstats
+    daily_returns = pd.Series(
+        np.diff(values) / values[:-1],
+        index=dates[1:],
+    )
 
     final_value = values[-1]
     total_return = (final_value - initial_value) / initial_value
 
-    # Daily returns from portfolio values
-    daily_returns = np.diff(values) / values[:-1]
-    ann_vol = float(np.std(daily_returns) * np.sqrt(252))
+    # Use quantstats for metric computation
+    ann_vol: float = qs.stats.volatility(daily_returns, annualize=True)  # type: ignore[assignment]
+    sharpe: float = qs.stats.sharpe(daily_returns, rf=0.02 / 252)  # type: ignore[assignment]
+    max_dd: float = qs.stats.max_drawdown(daily_returns)  # type: ignore[assignment]
 
-    # Sharpe ratio (assuming rf = 0.02 annualised)
-    rf_daily = 0.02 / 252
-    excess = daily_returns - rf_daily
-    sharpe = float(np.mean(excess) / np.std(excess) * np.sqrt(252)) if np.std(excess) > 0 else 0.0
-
-    # Max drawdown
+    # Max drawdown duration (quantstats doesn't expose this directly)
     cummax = np.maximum.accumulate(values)
-    drawdowns = (values - cummax) / cummax
-    max_dd = float(np.min(drawdowns))
-
-    # Max drawdown duration
     dd_duration = 0
     max_dd_duration = 0
     for i in range(len(values)):

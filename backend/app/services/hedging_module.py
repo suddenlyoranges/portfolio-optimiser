@@ -1,6 +1,14 @@
+"""
+Beta hedging module using statsmodels OLS regression.
+
+Computes the hedge ratio between a portfolio and a benchmark index
+using ordinary least squares, providing beta, R², and hedge notional.
+"""
+
 from datetime import date, timedelta
 
 import numpy as np
+import statsmodels.api as sm
 
 from app.services.market_data_service import compute_returns, fetch_prices
 
@@ -33,16 +41,12 @@ async def compute_beta_hedge(
     portfolio_returns = returns[tickers].values @ w
     benchmark_returns = returns[benchmark_ticker].values
 
-    # OLS regression: portfolio_return = alpha + beta * benchmark_return
-    x_mat = np.column_stack([np.ones(len(benchmark_returns)), benchmark_returns])
-    coeffs = np.linalg.lstsq(x_mat, portfolio_returns, rcond=None)[0]
-    beta = float(coeffs[1])
+    # OLS regression via statsmodels: portfolio_return = alpha + beta * benchmark_return
+    X = sm.add_constant(benchmark_returns)
+    model = sm.OLS(portfolio_returns, X).fit()
 
-    # R-squared
-    predicted = x_mat @ coeffs
-    ss_res = np.sum((portfolio_returns - predicted) ** 2)
-    ss_tot = np.sum((portfolio_returns - portfolio_returns.mean()) ** 2)
-    r_squared = float(1 - ss_res / ss_tot) if ss_tot > 0 else 0.0
+    beta = float(model.params[1])
+    r_squared = float(model.rsquared)
 
     # Hedge notional
     hedge_notional = abs(beta) * portfolio_value

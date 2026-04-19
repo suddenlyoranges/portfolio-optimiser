@@ -72,10 +72,11 @@ async def run_optimisation(
         cov = np.diag(np.array(vol_list) ** 2)
 
     # Run optimisation
+    rf = body.risk_free_rate
     if body.method == OptimisationMethod.MIN_VARIANCE:
         weights = engine.min_variance(mu, cov)
     elif body.method == OptimisationMethod.MAX_SHARPE:
-        weights = engine.max_sharpe(mu, cov)
+        weights = engine.max_sharpe(mu, cov, rf=rf)
     elif body.method == OptimisationMethod.RISK_PARITY:
         weights = engine.risk_parity(mu, cov)
     elif body.method == OptimisationMethod.MAX_DIVERSIFICATION:
@@ -83,9 +84,9 @@ async def run_optimisation(
     elif body.method == OptimisationMethod.EQUAL_WEIGHT:
         weights = engine.equal_weight(mu, cov)
     else:
-        weights = engine.max_sharpe(mu, cov)
+        weights = engine.max_sharpe(mu, cov, rf=rf)
 
-    stats = engine.compute_portfolio_stats(weights, mu, cov)
+    stats = engine.compute_portfolio_stats(weights, mu, cov, rf=rf)
     risk = engine.compute_var_cvar(weights, mu, cov)
     frontier = engine.mean_variance_frontier(mu, cov)
 
