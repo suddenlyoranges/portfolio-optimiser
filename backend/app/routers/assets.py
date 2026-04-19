@@ -42,7 +42,7 @@ async def add_asset(
         raise HTTPException(status_code=400, detail="Ticker is required")
 
     # Find or create asset
-    name = body.get("name", "").strip() or None
+    name = (body.get("name") or "").strip() or None
 
     result = await db.execute(select(Asset).where(Asset.ticker == ticker))
     asset = result.scalar_one_or_none()
